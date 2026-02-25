@@ -214,5 +214,96 @@
                 <div class="payment-grid">
                     <div class="pay-card">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/KBZ_Pay_Logo.png/600px-KBZ_Pay_Logo.png" class="pay-icon" alt="KPay">
-                        <span class="pay-number">0995711
-                            
+                        <span class="pay-number">09957114328</span>
+                        <span class="pay-holder">Myint Myat Kaung</span>
+                    </div>
+                    <div class="pay-card">
+                        <img src="https://www.wavemoney.com.mm/favicon.ico" class="pay-icon" style="background:#fff; padding:2px;" alt="WavePay">
+                        <span class="pay-number">09967353629</span>
+                        <span class="pay-holder">That Paing Oo</span>
+                    </div>
+                </div>
+                
+                <label style="margin-top:15px; font-size:12px; display:block; color:#ccc; text-align:center;">ငွေလွှဲ Screenshot တင်ပါ</label>
+                <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px; margin-top:5px;">
+                <div id="imgError" class="error-text">❌ Screenshot ပုံ ထည့်ပေးပါဦး</div>
+            </div>
+            
+            <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
+        </div>
+    </div>
+
+    <script>
+        let currentGame = 'mlbb';
+
+        function openApp() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+        }
+
+        function showGame(game, btn) {
+            currentGame = game;
+            document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(game).classList.add('active');
+            btn.classList.add('active');
+            hideErrors();
+        }
+
+        function hideErrors() {
+            document.querySelectorAll('.error-text').forEach(e => e.style.display = 'none');
+        }
+
+        async function sendOrder() {
+            hideErrors();
+            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
+            const chatId = "-1003873364344";
+            
+            const gId = document.getElementById('gameId').value;
+            const sId = document.getElementById('serverId').value;
+            const fileInput = document.getElementById('screenshot');
+            const submitBtn = document.getElementById('submitBtn');
+            const amt = document.getElementById(currentGame + 'List').value;
+
+            let hasError = false;
+            if (!gId || gId.length < 4 || !sId) {
+                document.getElementById('idError').style.display = 'block';
+                hasError = true;
+            }
+            if (!amt || amt.includes("---")) {
+                document.getElementById('amtError').style.display = 'block';
+                hasError = true;
+            }
+            if (fileInput.files.length === 0) {
+                document.getElementById('imgError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "ခဏစောင့်ပါ (5s)...";
+
+            const message = `🛒 အော်ဒါအသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} (${sId})\n📦 ပစ္စည်း: ${amt}`;
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('photo', fileInput.files[0]);
+                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
+            } catch(e) {
+                alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
+            } finally {
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "အော်ဒါတင်မည်";
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+                </html>
+                                                             
+            
