@@ -90,7 +90,6 @@
             font-size: 18px; margin-top: 5px;
         }
 
-        /* ပိတ်ထားချိန် ခလုတ်ပုံစံ */
         .order-btn:disabled {
             background: #555 !important;
             cursor: not-allowed;
@@ -103,11 +102,106 @@
     <div id="startScreen">
         <img src="1000027003.png" class="logo-main" alt="Logo">
         <h1 style="color:#00d2ff; margin:0; font-size: 26px;">RYKHO Game Store 2</h1>
-        <p style="color:#bbb; margin-top: 10px; margin-bottom:40px;">Diamond Selling Service</p>
+        <p style="color:#bbb; margin-top: 10px; margin-bottom:40px;">Diamonds & UC Store</p>
         <button class="start-btn" onclick="openApp()">START</button>
     </div>
 
     <div id="mainApp">
         <div class="card">
             <img src="1000027003.png" class="shop-logo" alt="Logo">
+            <h2>RYKHO Store 2</h2>
+            <p style="font-size:12px; color:#ffda44; font-weight: bold;">🎮 Diamonds & UC Service</p>
             
+            <label>Game ID & Server</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="number" id="gameId" placeholder="ID">
+                <input type="number" id="serverId" placeholder="Server/Region" style="width: 45%;">
+            </div>
+            
+            <label>ပစ္စည်းအမျိုးအစား ရွေးချယ်ပါ</label>
+            <select id="diamondAmount">
+                <option value="" disabled selected>💎 Diamond & UC List</option>
+                
+                <optgroup label="Mobile Legends (MLBB)">
+                    <option>MLBB: Weekly Pass💎 - 5850ks</option>
+                    <option>MLBB: 86 Diamonds💎 - 4800ks</option>
+                    <option>MLBB: 172 Diamonds💎 - 9600ks</option>
+                    <option>MLBB: 257 Diamonds💎 - 14000ks</option>
+                    <option>MLBB: 706 Diamonds💎 - 38000ks</option>
+                </optgroup>
+
+                <optgroup label="PUBG Mobile (UC Prices 🍓)">
+                    <option>PUBG: 60 UC - 3800ks</option>
+                    <option>PUBG: 120 UC - 7800ks</option>
+                    <option>PUBG: 180 UC - 11500ks</option>
+                    <option>PUBG: 240 UC - 15500ks</option>
+                    <option>PUBG: 325 UC - 19000ks</option>
+                    <option>PUBG: 660 UC - 37500ks</option>
+                    <option>PUBG: 1800 UC - 93000ks</option>
+                    <option>PUBG: 3850 UC - 188000ks</option>
+                    <option>PUBG: 8100 UC - 375000ks</option>
+                </optgroup>
+            </select>
+
+            <div class="payment-box">
+                <div style="color: #00d2ff; font-weight: bold; margin-bottom: 10px; text-align: center;">💳 ငွေလွှဲရန် အချက်အလက်</div>
+                <div class="pay-item">🔹 KPay: <span class="pay-num">09957114328</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">Myint Myat Kaung</span></div>
+                <hr style="border: 0.5px solid #444; margin: 10px 0;">
+                <div class="pay-item">🔹 Wave: <span class="pay-num">09967353629</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">That Paing Oo</span></div>
+                
+                <label style="text-align: center; margin-top: 15px;">ငွေလွှဲ Screenshot တင်ပါ</label>
+                <input type="file" id="screenshot" accept="image/*" style="border: none; background: none; font-size: 12px;">
+            </div>
+            
+            <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            document.getElementById('startScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+            }, 400);
+        }
+
+        async function sendOrder() {
+            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
+            const chatId = "-1003873364344";
+            const gId = document.getElementById('gameId').value;
+            const sId = document.getElementById('serverId').value;
+            const amt = document.getElementById('diamondAmount').value;
+            const fileInput = document.getElementById('screenshot');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if(!gId || !sId || !amt || fileInput.files.length === 0) {
+                alert("အချက်အလက်များကို ပြည့်စုံစွာ ဖြည့်ပေးပါဗျာ။"); return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "ခဏစောင့်ပါ (5s)...";
+
+            const message = `🛒 အော်ဒါအသစ်!\n🆔 ID: ${gId} (${sId})\n📦 ပစ္စည်း: ${amt}`;
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('photo', fileInput.files[0]);
+                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
+            } catch(e) {
+                alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
+            } finally {
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "အော်ဒါတင်မည်";
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
