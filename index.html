@@ -2,159 +2,206 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RYKHO Game Store</title>
-    
-    <meta name="theme-color" content="#0b141a">
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22RYKHO%20Store%22,%22short_name%22:%22RYKHO%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b141a%22,%22theme_color%22:%22#00d2ff%22,%22icons%22:[{%22src%22:%221000027003.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22}]}">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYKHO Game Store 2</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0b141a; color: white; display: flex; justify-content: center; min-height: 100vh; }
-        #mainApp { width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
-        
-        /* App Install Box */
-        #installAppBox { 
-            display: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
-            padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; cursor: pointer;
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            color: white;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #0b141a;
         }
         
-        .card { background: rgba(30, 39, 46, 0.98); padding: 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
-        .tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .tab-btn { background: #2f3640; color: white; border: none; padding: 10px 15px; border-radius: 12px; cursor: pointer; }
-        .tab-btn.active { background: #00d2ff; font-weight: bold; }
+        #startScreen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 100; text-align: center;
+            backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.7);
+        }
         
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; font-size: 16px; }
+        .logo-main { 
+            width: 170px; height: 170px; 
+            border-radius: 50%; 
+            border: 4px solid #00d2ff;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
+            object-fit: cover;
+            margin-bottom: 25px;
+        }
+
+        .start-btn { 
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
+            color: white; border: none; padding: 15px 75px; 
+            border-radius: 35px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4);
+        }
+
+        #mainApp { display: none; width: 100%; max-width: 410px; padding: 20px; box-sizing: border-box; }
         
-        .payment-container { margin: 20px 0; padding: 15px; background: rgba(0, 210, 255, 0.1); border-radius: 20px; border: 1px solid #00d2ff; }
-        .payment-grid { display: flex; gap: 15px; margin-top: 10px; }
-        .pay-card { flex: 1; background: #252d35; padding: 12px; border-radius: 18px; border: 1px solid #3d4650; text-align: center; }
-        .pay-logo-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 5px; }
+        .card { 
+            background: rgba(30, 39, 46, 0.95);
+            padding: 25px; border-radius: 25px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .shop-logo { 
+            width: 85px; height: 85px; 
+            border-radius: 50%; 
+            border: 2px solid #00d2ff;
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+
+        h2 { color: #00d2ff; margin: 5px 0; font-size: 22px; }
+        label { font-size: 13px; color: #ccc; display: block; margin-top: 15px; text-align: left; }
         
-        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 10px; }
-        .game-section { display: none; }
-        .game-section.active { display: block; }
+        input, select { 
+            width: 100%; padding: 12px; margin: 8px 0; 
+            border-radius: 12px; border: 1px solid #444; 
+            background: #1e272e; color: white; box-sizing: border-box; 
+            outline: none;
+        }
+
+        .payment-box { 
+            background: rgba(0, 210, 255, 0.08); 
+            padding: 15px; border-radius: 15px; 
+            margin: 15px 0; border: 1px dashed #00d2ff; 
+            text-align: left;
+        }
+
+        .pay-item { margin-bottom: 8px; font-size: 14px; }
+        .pay-name { color: #f1c40f; font-weight: bold; }
+        .pay-num { color: #00d2ff; font-weight: bold; }
+
+        .order-btn { 
+            width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); 
+            color: white; border: none; padding: 16px; 
+            border-radius: 15px; font-weight: bold; cursor: pointer;
+            font-size: 18px; margin-top: 5px;
+        }
+
+        .order-btn:disabled {
+            background: #555 !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
 
-<div id="mainApp">
-    <div id="installAppBox" onclick="installNow()">
-        <span style="font-size: 18px;">📲 <b>RYKHO App သွင်းရန်</b></span><br>
-        <small>Home Screen ပေါ်မှာ သိမ်းထားရန် နှိပ်ပါ</small>
+    <div id="startScreen">
+        <img src="1000027003.png" class="logo-main" alt="Logo">
+        <h1 style="color:#00d2ff; margin:0; font-size: 26px;">RYKHO Game Store 2</h1>
+        <p style="color:#bbb; margin-top: 10px; margin-bottom:40px;">Diamonds & UC Store</p>
+        <button class="start-btn" onclick="openApp()">START</button>
     </div>
 
-    <div class="card">
-        <h2 style="color:#00d2ff; margin-top: 0;">RYKHO Store 2</h2>
-        
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
-            <button class="tab-btn" onclick="showGame('pubg', this)">PUBG 🍓</button>
-            <button class="tab-btn" onclick="showGame('mc', this)">MC ♟️</button>
-        </div>
-
-        <input type="number" id="gameId" placeholder="ID">
-        <input type="number" id="serverId" placeholder="Server">
-
-        <div id="mlbb" class="game-section active">
-            <select id="mlbbList">
-                <option value="" disabled selected>💎 MLBB အမျိုးအစားရွေးပါ</option>
-                <option value="Weekly Pass - 5850ks">Weekly Pass - 5850ks</option>
-                <option value="86 Diamonds - 4800ks">86 Diamonds - 4800ks</option>
-                <option value="172 Diamonds - 9600ks">172 Diamonds - 9600ks</option>
-            </select>
-        </div>
-
-        <div id="pubg" class="game-section">
-            <select id="pubgList">
-                <option value="" disabled selected>🍓 PUBG UC List ရွေးပါ</option>
-                <option value="60 UC - 3800ks">60 UC - 3800ks</option>
-                <option value="325 UC - 19000ks">325 UC - 19000ks</option>
-            </select>
-        </div>
-
-        <div id="mc" class="game-section">
-            <select id="mcList">
-                <option value="" disabled selected>♟️ MC List ရွေးပါ</option>
-                <option value="100 MC - 2000ks">100 MC - 2000ks</option>
-                <option value="500 MC - 9500ks">500 MC - 9500ks</option>
-            </select>
-        </div>
-
-        <div class="payment-container">
-            <p style="margin: 0 0 10px 0; font-size: 14px; color: #00d2ff;">💳 ငွေလွှဲရန် အချက်အလက်</p>
-            <div class="payment-grid">
-                <div class="pay-card">
-                    <img src="1000027054.jpg" class="pay-logo-img">
-                    <b style="font-size:12px; display:block; color:#00d2ff;">KPay</b>
-                    <span style="font-size:11px;">09957114328</span>
-                </div>
-                <div class="pay-card">
-                    <img src="1000027053.jpg" class="pay-logo-img">
-                    <b style="font-size:12px; display:block; color:#f1c40f;">Wave</b>
-                    <span style="font-size:11px;">09967353629</span>
-                </div>
+    <div id="mainApp">
+        <div class="card">
+            <img src="1000027003.png" class="shop-logo" alt="Logo">
+            <h2>RYKHO Store 2</h2>
+            <p style="font-size:12px; color:#ffda44; font-weight: bold;">🎮 Diamonds & UC Service</p>
+            
+            <label>Game ID & Server</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="number" id="gameId" placeholder="ID">
+                <input type="number" id="serverId" placeholder="Server/Region" style="width: 45%;">
             </div>
-            <p style="font-size:12px; margin: 15px 0 5px 0;">ငွေလွှဲ Screenshot တင်ပါ</p>
-            <input type="file" id="screenshot" accept="image/*">
+            
+            <label>ပစ္စည်းအမျိုးအစား ရွေးချယ်ပါ</label>
+            <select id="diamondAmount">
+                <option value="" disabled selected>💎 Diamond & UC List</option>
+                
+                <optgroup label="Mobile Legends (MLBB)">
+                    <option>MLBB: Weekly Pass💎 - 5850ks</option>
+                    <option>MLBB: 86 Diamonds💎 - 4800ks</option>
+                    <option>MLBB: 172 Diamonds💎 - 9600ks</option>
+                    <option>MLBB: 257 Diamonds💎 - 14000ks</option>
+                    <option>MLBB: 706 Diamonds💎 - 38000ks</option>
+                </optgroup>
+
+                <optgroup label="PUBG Mobile (UC Prices 🍓)">
+                    <option>PUBG: 60 UC - 3800ks</option>
+                    <option>PUBG: 120 UC - 7800ks</option>
+                    <option>PUBG: 180 UC - 11500ks</option>
+                    <option>PUBG: 240 UC - 15500ks</option>
+                    <option>PUBG: 325 UC - 19000ks</option>
+                    <option>PUBG: 660 UC - 37500ks</option>
+                    <option>PUBG: 1800 UC - 93000ks</option>
+                    <option>PUBG: 3850 UC - 188000ks</option>
+                    <option>PUBG: 8100 UC - 375000ks</option>
+                </optgroup>
+            </select>
+
+            <div class="payment-box">
+                <div style="color: #00d2ff; font-weight: bold; margin-bottom: 10px; text-align: center;">💳 ငွေလွှဲရန် အချက်အလက်</div>
+                <div class="pay-item">🔹 KPay: <span class="pay-num">09957114328</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">Myint Myat Kaung</span></div>
+                <hr style="border: 0.5px solid #444; margin: 10px 0;">
+                <div class="pay-item">🔹 Wave: <span class="pay-num">09967353629</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">That Paing Oo</span></div>
+                
+                <label style="text-align: center; margin-top: 15px;">ငွေလွှဲ Screenshot တင်ပါ</label>
+                <input type="file" id="screenshot" accept="image/*" style="border: none; background: none; font-size: 12px;">
+            </div>
+            
+            <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
         </div>
-        
-        <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
     </div>
-</div>
 
-<script>
-    let currentGame = 'mlbb';
-    let deferredPrompt;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('installAppBox').style.display = 'block';
-    });
-
-    async function installNow() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') document.getElementById('installAppBox').style.display = 'none';
-            deferredPrompt = null;
+    <script>
+        function openApp() {
+            document.getElementById('startScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+            }, 400);
         }
-    }
 
-    function showGame(game, btn) {
-        currentGame = game;
-        document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(game).classList.add('active');
-        btn.classList.add('active');
-    }
+        async function sendOrder() {
+            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
+            const chatId = "-1003873364344";
+            const gId = document.getElementById('gameId').value;
+            const sId = document.getElementById('serverId').value;
+            const amt = document.getElementById('diamondAmount').value;
+            const fileInput = document.getElementById('screenshot');
+            const submitBtn = document.getElementById('submitBtn');
 
-    async function sendOrder() {
-        const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
-        const chatId = "-1003873364344";
-        const gId = document.getElementById('gameId').value;
-        const sId = document.getElementById('serverId').value;
-        const amt = document.getElementById(currentGame + 'List').value;
-        const fileInput = document.getElementById('screenshot');
+            if(!gId || !sId || !amt || fileInput.files.length === 0) {
+                alert("အချက်အလက်များကို ပြည့်စုံစွာ ဖြည့်ပေးပါဗျာ။"); return;
+            }
 
-        if(!gId || !amt || fileInput.files.length === 0) return alert("အချက်အလက်အားလုံး ဖြည့်ပေးပါ!");
+            submitBtn.disabled = true;
+            submitBtn.innerText = "ခဏစောင့်ပါ (5s)...";
 
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerText = "ပို့ဆောင်နေပါသည်...";
-
-        const message = `🛒 အော်ဒါသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} (${sId})\n📦 ပစ္စည်း: ${amt}`;
-        
-        try {
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
-            const formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('photo', fileInput.files[0]);
-            await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
-            alert("အော်ဒါတင်ပြီးပါပြီ!");
-        } catch(e) { alert("မအောင်မြင်ပါ။"); }
-        btn.disabled = false; btn.innerText = "အော်ဒါတင်မည်";
-    }
-</script>
+            const message = `🛒 အော်ဒါအသစ်!\n🆔 ID: ${gId} (${sId})\n📦 ပစ္စည်း: ${amt}`;
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('photo', fileInput.files[0]);
+                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
+            } catch(e) {
+                alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
+            } finally {
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "အော်ဒါတင်မည်";
+                }, 5000);
+            }
+        }
+    </script>
 </body>
 </html>
