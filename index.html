@@ -12,17 +12,10 @@
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0b141a; color: white; display: flex; justify-content: center; min-height: 100vh; }
         #mainApp { width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
         
-        /* App Install Button - ရှင်းလင်းစွာ မြင်ရအောင် ပြင်ထားသည် */
+        /* App Install Box */
         #installAppBox { 
-            display: none; 
-            background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
-            padding: 15px; 
-            border-radius: 15px; 
-            margin-bottom: 20px; 
-            text-align: center; 
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 0 15px rgba(0,210,255,0.5);
+            display: none; background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
+            padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; cursor: pointer;
         }
         
         .card { background: rgba(30, 39, 46, 0.98); padding: 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
@@ -34,10 +27,8 @@
         
         .payment-container { margin: 20px 0; padding: 15px; background: rgba(0, 210, 255, 0.1); border-radius: 20px; border: 1px solid #00d2ff; }
         .payment-grid { display: flex; gap: 15px; margin-top: 10px; }
-        .pay-card { flex: 1; background: #252d35; padding: 12px; border-radius: 18px; border: 1px solid #3d4650; }
-        
-        /* Logo ပုံများ သေချာပေါ်စေရန် */
-        .pay-logo-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 5px; background: #eee; }
+        .pay-card { flex: 1; background: #252d35; padding: 12px; border-radius: 18px; border: 1px solid #3d4650; text-align: center; }
+        .pay-logo-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 5px; }
         
         .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 10px; }
         .game-section { display: none; }
@@ -49,7 +40,7 @@
 <div id="mainApp">
     <div id="installAppBox" onclick="installNow()">
         <span style="font-size: 18px;">📲 <b>RYKHO App သွင်းရန်</b></span><br>
-        <small>ဖုန်းထဲမှာ App အဖြစ် သုံးရန် နှိပ်ပါ</small>
+        <small>Home Screen ပေါ်မှာ သိမ်းထားရန် နှိပ်ပါ</small>
     </div>
 
     <div class="card">
@@ -58,7 +49,7 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
             <button class="tab-btn" onclick="showGame('pubg', this)">PUBG 🍓</button>
-            <button class="tab-btn" onclick="showGame('mcgogo', this)">MC ♟️</button>
+            <button class="tab-btn" onclick="showGame('mc', this)">MC ♟️</button>
         </div>
 
         <input type="number" id="gameId" placeholder="ID">
@@ -67,29 +58,44 @@
         <div id="mlbb" class="game-section active">
             <select id="mlbbList">
                 <option value="" disabled selected>💎 MLBB အမျိုးအစားရွေးပါ</option>
-                <option>Weekly Pass - 5850ks</option>
-                <option>86 Diamonds - 4800ks</option>
-                <option>172 Diamonds - 9600ks</option>
-                <option>257 Diamonds - 14000ks</option>
+                <option value="Weekly Pass - 5850ks">Weekly Pass - 5850ks</option>
+                <option value="86 Diamonds - 4800ks">86 Diamonds - 4800ks</option>
+                <option value="172 Diamonds - 9600ks">172 Diamonds - 9600ks</option>
             </select>
         </div>
-        
+
+        <div id="pubg" class="game-section">
+            <select id="pubgList">
+                <option value="" disabled selected>🍓 PUBG UC List ရွေးပါ</option>
+                <option value="60 UC - 3800ks">60 UC - 3800ks</option>
+                <option value="325 UC - 19000ks">325 UC - 19000ks</option>
+            </select>
+        </div>
+
+        <div id="mc" class="game-section">
+            <select id="mcList">
+                <option value="" disabled selected>♟️ MC List ရွေးပါ</option>
+                <option value="100 MC - 2000ks">100 MC - 2000ks</option>
+                <option value="500 MC - 9500ks">500 MC - 9500ks</option>
+            </select>
+        </div>
+
         <div class="payment-container">
             <p style="margin: 0 0 10px 0; font-size: 14px; color: #00d2ff;">💳 ငွေလွှဲရန် အချက်အလက်</p>
             <div class="payment-grid">
                 <div class="pay-card">
-                    <img src="1000027054.jpg" class="pay-logo-img" alt="KPay">
+                    <img src="1000027054.jpg" class="pay-logo-img">
                     <b style="font-size:12px; display:block; color:#00d2ff;">KPay</b>
                     <span style="font-size:11px;">09957114328</span>
                 </div>
                 <div class="pay-card">
-                    <img src="1000027053.jpg" class="pay-logo-img" alt="Wave">
+                    <img src="1000027053.jpg" class="pay-logo-img">
                     <b style="font-size:12px; display:block; color:#f1c40f;">Wave</b>
                     <span style="font-size:11px;">09967353629</span>
                 </div>
             </div>
             <p style="font-size:12px; margin: 15px 0 5px 0;">ငွေလွှဲ Screenshot တင်ပါ</p>
-            <input type="file" id="screenshot" accept="image/*" style="border:none; padding: 5px;">
+            <input type="file" id="screenshot" accept="image/*">
         </div>
         
         <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
@@ -100,7 +106,6 @@
     let currentGame = 'mlbb';
     let deferredPrompt;
 
-    // App Install Prompt Logic
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -111,9 +116,7 @@
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                document.getElementById('installAppBox').style.display = 'none';
-            }
+            if (outcome === 'accepted') document.getElementById('installAppBox').style.display = 'none';
             deferredPrompt = null;
         }
     }
@@ -129,15 +132,12 @@
     async function sendOrder() {
         const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
         const chatId = "-1003873364344";
-        
         const gId = document.getElementById('gameId').value;
         const sId = document.getElementById('serverId').value;
         const amt = document.getElementById(currentGame + 'List').value;
         const fileInput = document.getElementById('screenshot');
 
-        if(!gId || !amt || fileInput.files.length === 0) {
-            return alert("အချက်အလက်အားလုံး ပြည့်စုံအောင် ဖြည့်ပေးပါ!");
-        }
+        if(!gId || !amt || fileInput.files.length === 0) return alert("အချက်အလက်အားလုံး ဖြည့်ပေးပါ!");
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
@@ -151,13 +151,9 @@
             formData.append('chat_id', chatId);
             formData.append('photo', fileInput.files[0]);
             await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
-            alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
-        } catch(e) {
-            alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "အော်ဒါတင်မည်";
-        }
+            alert("အော်ဒါတင်ပြီးပါပြီ!");
+        } catch(e) { alert("မအောင်မြင်ပါ။"); }
+        btn.disabled = false; btn.innerText = "အော်ဒါတင်မည်";
     }
 </script>
 </body>
