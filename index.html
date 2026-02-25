@@ -71,6 +71,11 @@
             outline: none;
         }
 
+        .error-text {
+            color: #ff4757; font-size: 11px; margin-top: -5px; margin-bottom: 10px;
+            display: none; text-align: left;
+        }
+
         .payment-box { 
             background: rgba(0, 210, 255, 0.08); 
             padding: 15px; border-radius: 15px; 
@@ -102,8 +107,6 @@
     <div id="mainApp">
         <div class="card">
             <h2 style="color:#00d2ff; margin-bottom:5px;">RYKHO Store 2</h2>
-            <p style="font-size:11px; color:#ffda44;">ဂိမ်းအမျိုးအစား ရွေးချယ်ပါ 👇</p>
-
             <div class="tabs">
                 <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
                 <button class="tab-btn" onclick="showGame('pubg', this)">PUBG UC 🍓</button>
@@ -111,14 +114,20 @@
             </div>
 
             <label style="text-align:left; display:block; font-size:13px; color:#ccc;">Game ID & Server</label>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 8px; margin-bottom:5px;">
                 <input type="number" id="gameId" placeholder="ID">
-                <input type="number" id="serverId" placeholder="Server/Region" style="width: 45%;">
+                <input type="number" id="serverId" placeholder="Server" style="width: 45%;">
             </div>
+            <div id="idError" class="error-text">❌ ID နှင့် Server ကို အမှန်အတိုင်း ထည့်ပါ</div>
 
             <div id="mlbb" class="game-section active">
                 <select id="mlbbList">
-                    <option value="" disabled selected>💎 MLBB List</option>
+                    <option value="" disabled selected>💎 MLBB List ရွေးပါ</option>
+                    <option>MLBB: Weekly Pass - 5850ks</option>
+                    <option>MLBB: Twilight Pass - 31500ks</option>
+                    <option>MLBB: Monthly Epic Bundle - 15500ks</option>
+                    <option>MLBB: Weekly Elite Bundle - 3000ks</option>
+                    <option>--------------------------</option>
                     <option>MLBB: 86 Diamonds - 4800ks</option>
                     <option>MLBB: 172 Diamonds - 9600ks</option>
                     <option>MLBB: 257 Diamonds - 14000ks</option>
@@ -143,7 +152,7 @@
 
             <div id="pubg" class="game-section">
                 <select id="pubgList">
-                    <option value="" disabled selected>🍓 PUBG UC List</option>
+                    <option value="" disabled selected>🍓 PUBG UC List ရွေးပါ</option>
                     <option>PUBG: 60 UC - 3800ks</option>
                     <option>PUBG: 120 UC - 7800ks</option>
                     <option>PUBG: 180 UC - 11500ks</option>
@@ -158,7 +167,7 @@
 
             <div id="mcgogo" class="game-section">
                 <select id="mcgogoList">
-                    <option value="" disabled selected>♟️ MC GoGo List</option>
+                    <option value="" disabled selected>♟️ MC GoGo List ရွေးပါ</option>
                     <option>MC GoGo: Wp - 7000ks</option>
                     <option>MC GoGo: 50+bonus - 3300ks</option>
                     <option>MC GoGo: 150+bonus - 9500ks</option>
@@ -180,12 +189,14 @@
                     <option>MC GoGo: Battle Discounts - 3500ks</option>
                 </select>
             </div>
+            <div id="amtError" class="error-text">❌ ဝယ်ယူမည့် အမျိုးအစားကို ရွေးပေးပါ</div>
 
             <div class="payment-box">
                 <div class="pay-item">🔹 KPay: <span class="pay-num">09957114328</span> (M M Kaung)</div>
                 <div class="pay-item">🔹 Wave: <span class="pay-num">09967353629</span> (T P Oo)</div>
                 <label style="margin-top:10px; font-size:12px;">ငွေလွှဲ Screenshot တင်ပါ</label>
                 <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px;">
+                <div id="imgError" class="error-text">❌ Screenshot ပုံ ထည့်ပေးပါဦး</div>
             </div>
             
             <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
@@ -206,20 +217,39 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(game).classList.add('active');
             btn.classList.add('active');
+            hideErrors();
+        }
+
+        function hideErrors() {
+            document.querySelectorAll('.error-text').forEach(e => e.style.display = 'none');
         }
 
         async function sendOrder() {
+            hideErrors();
             const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
             const chatId = "-1003873364344";
+            
             const gId = document.getElementById('gameId').value;
             const sId = document.getElementById('serverId').value;
             const fileInput = document.getElementById('screenshot');
             const submitBtn = document.getElementById('submitBtn');
             const amt = document.getElementById(currentGame + 'List').value;
 
-            if(!gId || !sId || !amt || fileInput.files.length === 0) {
-                alert("အချက်အလက်များကို ပြည့်စုံစွာ ဖြည့်ပေးပါဗျာ။"); return;
+            let hasError = false;
+            if (!gId || gId.length < 4 || !sId) {
+                document.getElementById('idError').style.display = 'block';
+                hasError = true;
             }
+            if (!amt || amt.includes("---")) {
+                document.getElementById('amtError').style.display = 'block';
+                hasError = true;
+            }
+            if (fileInput.files.length === 0) {
+                document.getElementById('imgError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (hasError) return;
 
             submitBtn.disabled = true;
             submitBtn.innerText = "ခဏစောင့်ပါ (5s)...";
@@ -244,5 +274,6 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>
+
+
