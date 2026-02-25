@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYKHO Game Store 2</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            color: white;
+            /* Background မှာ သင့်ပုံကို ဝါးဝါးလေး ထည့်ထားတာပါ */
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #0b141a;
+        }
+        
+        #startScreen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 100; text-align: center;
+            backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .logo-main { 
+            width: 170px; height: 170px; 
+            border-radius: 50%; /* အဝိုင်းလေးဖြစ်ရန် */
+            border: 4px solid #00d2ff;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
+            object-fit: cover;
+            margin-bottom: 25px;
+        }
+
+        .start-btn { 
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
+            color: white; border: none; padding: 15px 75px; 
+            border-radius: 35px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4);
+        }
+
+        #mainApp { display: none; width: 100%; max-width: 410px; padding: 20px; box-sizing: border-box; }
+        
+        .card { 
+            background: rgba(30, 39, 46, 0.95);
+            padding: 25px; border-radius: 25px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .shop-logo { 
+            width: 85px; height: 85px; 
+            border-radius: 50%; 
+            border: 2px solid #00d2ff;
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+
+        h2 { color: #00d2ff; margin: 5px 0; font-size: 22px; }
+        label { font-size: 13px; color: #ccc; display: block; margin-top: 15px; text-align: left; }
+        
+        input, select { 
+            width: 100%; padding: 12px; margin: 8px 0; 
+            border-radius: 12px; border: 1px solid #444; 
+            background: #1e272e; color: white; box-sizing: border-box; 
+            outline: none;
+        }
+
+        .payment-box { 
+            background: rgba(0, 210, 255, 0.08); 
+            padding: 15px; border-radius: 15px; 
+            margin: 15px 0; border: 1px dashed #00d2ff; 
+            text-align: left;
+        }
+
+        .pay-item { margin-bottom: 8px; font-size: 14px; }
+        .pay-name { color: #f1c40f; font-weight: bold; }
+        .pay-num { color: #00d2ff; font-weight: bold; }
+
+        .order-btn { 
+            width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); 
+            color: white; border: none; padding: 16px; 
+            border-radius: 15px; font-weight: bold; cursor: pointer;
+            font-size: 18px; margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="startScreen">
+        <img src="1000027003.png" class="logo-main" alt="Logo">
+        <h1 style="color:#00d2ff; margin:0; font-size: 26px;">RYKHO Game Store 2</h1>
+        <p style="color:#bbb; margin-top: 10px; margin-bottom:40px;">Diamond Selling Service</p>
+        <button class="start-btn" onclick="openApp()">START</button>
+    </div>
+
+    <div id="mainApp">
+        <div class="card">
+            <img src="1000027003.png" class="shop-logo" alt="Logo">
+            <h2>RYKHO Store 2</h2>
+            <p style="font-size:12px; color:#ffda44; font-weight: bold;">🎮 All Server (indo🇲🇨မရ)</p>
+            
+            <label>Game ID & Server</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="number" id="gameId" placeholder="ID">
+                <input type="number" id="serverId" placeholder="Server" style="width: 45%;">
+            </div>
+            
+            <label>Diamond အမျိုးအစား ရွေးချယ်ပါ</label>
+            <select id="diamondAmount">
+                <option value="" disabled selected>💎 Diamond List</option>
+                <optgroup label="Weekly & Special">
+                    <option>Weekly Pass💎 - 5850ks</option>
+                    <option>Twilight Pass❤️ - 31500ks</option>
+                </optgroup>
+                <optgroup label="Direct Diamonds">
+                    <option>💎 86 - 4800ks</option>
+                    <option>💎 172 - 9600ks</option>
+                    <option>💎 257 - 14000ks</option>
+                    <option>💎 514 - 27800ks</option>
+                    <option>💎 706 - 38000ks</option>
+                    <option>💎 1135 - 62250ks</option>
+                    <option>💎 2195 - 120500ks</option>
+                    <option>💎 5532 - 290000ks</option>
+                </optgroup>
+            </select>
+
+            <div class="payment-box">
+                <div style="color: #00d2ff; font-weight: bold; margin-bottom: 10px; text-align: center;">💳 ငွေလွှဲရန် အချက်အလက်</div>
+                <div class="pay-item">🔹 KPay: <span class="pay-num">09957114328</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">Myint Myat Kaung</span></div>
+                <hr style="border: 0.5px solid #444; margin: 10px 0;">
+                <div class="pay-item">🔹 Wave: <span class="pay-num">09967353629</span></div>
+                <div class="pay-item">👤 Name: <span class="pay-name">That Paing Oo</span></div>
+                
+                <label style="text-align: center; margin-top: 15px;">ငွေလွှဲ Screenshot တင်ပါ</label>
+                <input type="file" id="screenshot" accept="image/*" style="border: none; background: none; font-size: 12px;">
+            </div>
+            
+            <button class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            document.getElementById('startScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+            }, 400);
+        }
+
+        async function sendOrder() {
+            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
+            const chatId = "7694529131";
+            const gId = document.getElementById('gameId').value;
+            const sId = document.getElementById('serverId').value;
+            const amt = document.getElementById('diamondAmount').value;
+            const fileInput = document.getElementById('screenshot');
+
+            if(!gId || !sId || !amt || fileInput.files.length === 0) {
+                alert("အချက်အလက်များကို ပြည့်စုံစွာ ဖြည့်ပေးပါဗျာ။"); return;
+            }
+
+            const message = `🛒 အော်ဒါအသစ်!\n🆔 ID: ${gId} (${sId})\n💎 ပစ္စည်း: ${amt}`;
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('photo', fileInput.files[0]);
+                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
+            } catch(e) {
+                alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
+            }
+        }
+    </script>
+</body>
+</html>
