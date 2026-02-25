@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RYKHO Store 2</title>
-    
-    <meta name="theme-color" content="#0b141a">
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22RYKHO%20Store%22,%22short_name%22:%22RYKHO%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b141a%22,%22theme_color%22:%22#00d2ff%22,%22icons%22:[{%22src%22:%221000027003.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22}]}">
-
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; margin: 0; background: #0b141a; color: white;
@@ -17,35 +13,28 @@
         /* Start Screen */
         #startScreen { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; z-index: 999;
+            background: #000; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 1000;
         }
         
-        .logo-main { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #00d2ff; margin-bottom: 20px; }
-        
+        .logo-main { width: 150px; height: 150px; border-radius: 50%; border: 3px solid #00d2ff; margin-bottom: 25px; }
         .start-btn { 
-            background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; border: none; 
-            padding: 15px 80px; border-radius: 35px; font-size: 20px; font-weight: bold; cursor: pointer;
+            background: #00d2ff; color: white; border: none; padding: 15px 80px; 
+            border-radius: 35px; font-size: 20px; font-weight: bold; cursor: pointer;
         }
 
-        /* Main Store App */
+        /* Main Store */
         #mainApp { display: none; width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
-        
-        .card { background: rgba(30, 39, 46, 0.98); padding: 20px; border-radius: 25px; border: 1px solid #444; text-align: center; }
-        
+        .card { background: #1e272e; padding: 20px; border-radius: 20px; border: 1px solid #444; text-align: center; }
         .tabs { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; flex-wrap: wrap; }
-        .tab-btn { background: #2f3640; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 11px; }
+        .tab-btn { background: #2f3640; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; font-size: 11px; }
         .tab-btn.active { background: #00d2ff; font-weight: bold; }
-
         .game-section { display: none; }
         .game-section.active { display: block; }
-
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; font-size: 14px; }
-        
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #121a21; color: white; box-sizing: border-box; }
         .payment-grid { display: flex; gap: 10px; margin-top: 10px; }
         .pay-card { flex: 1; background: #252d35; padding: 10px; border-radius: 15px; border: 1px solid #3d4650; font-size: 11px; }
-        
-        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 10px; }
+        .order-btn { width: 100%; background: #2ecc71; color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; font-size: 18px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -53,14 +42,73 @@
     <div id="startScreen">
         <img src="1000027003.png" class="logo-main">
         <h1 style="color:#00d2ff; margin-bottom: 30px;">RYKHO STORE 2</h1>
-        <button class="start-btn" onclick="enterStore()">START</button>
+        <button class="start-btn" onclick="startNow()">START</button>
     </div>
 
     <div id="mainApp">
         <div class="card">
             <h2 style="color:#00d2ff; margin:0 0 15px 0;">RYKHO STORE 2</h2>
-            
             <div class="tabs">
-                <button class="tab-btn active" onclick="changeGame('mlbb', this)">MLBB 💎</button>
-                <button class="tab-btn" style="background:#e67e
+                <button class="tab-btn active" onclick="tab('mlbb', this)">MLBB 💎</button>
+                <button class="tab-btn" style="background:#e67e22;" onclick="tab('ml2x', this)">MLBB 2X 🎁</button>
+                <button class="tab-btn" onclick="tab('pubg', this)">PUBG 🍓</button>
+                <button class="tab-btn" onclick="tab('mc', this)">MC ♟️</button>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="gId" placeholder="ID">
+                <input type="number" id="sId" placeholder="Server" style="width: 45%;">
+            </div>
+
+            <div id="mlbb" class="game-section active">
+                <select id="mlList">
+                    <option value="" disabled selected>💎 MLBB List ရွေးပါ</option>
+                    <option>Weekly Pass - 5850ks</option><option>Twilight Pass - 31500ks</option>
+                    <option>Monthly Epic Bundle - 15500ks</option><option>Weekly Elite Bundle - 3000ks</option>
+                    <option>💎86 - 4800ks</option><option>💎172 - 9600ks</option><option>💎257 - 14000ks</option>
+                    <option>💎300 - 17200ks</option><option>💎343 - 18800ks</option><option>💎429 - 23600ks</option>
+                    <option>💎514 - 27800ks</option><option>💎600 - 32700ks</option><option>💎706 - 38000ks</option>
+                    <option>💎878 - 47000ks</option><option>💎963 - 51500ks</option><option>💎1049 - 57000ks</option>
+                    <option>💎1135 - 62250ks</option><option>💎1220 - 65000ks</option><option>💎1412 - 75500ks</option>
+                    <option>💎2195 - 115000ks</option><option>💎3688 - 190000ks</option><option>💎5532 - 290000ks</option>
+                    <option>💎9288 - 475000ks</option>
+                </select>
+            </div>
+
+            <div id="ml2x" class="game-section">
+                <select id="ml2xList">
+                    <option value="" disabled selected>🎁 MLBB 2X Promo</option>
+                    <option>💎Dia 50 - 3000ks (Bonus 50)</option><option>💎Dia 150 - 9300ks (Bonus 150)</option>
+                    <option>💎Dia 250 - 15000ks (Bonus 250)</option><option>💎Dia 500 - 30000ks (Bonus 500)</option>
+                </select>
+            </div>
+
+            <div id="pubg" class="game-section">
+                <select id="pubgList">
+                    <option value="" disabled selected>🍓 PUBG UC List</option>
+                    <option>Uc60-3800ks</option><option>U120-7800ks</option><option>Uc180-11500ks</option>
+                    <option>Uc240-15500ks</option><option>Uc325-19000ks</option><option>Uc660-37500ks</option>
+                    <option>Uc1800-93000ks</option><option>Uc3850-188000ks</option><option>Uc8100-375000ks</option>
+                </select>
+            </div>
+
+            <div id="mc" class="game-section">
+                <select id="mcList">
+                    <option value="" disabled selected>♟️ Magic Chess Go Go</option>
+                    <option>💎Wp 7000</option><option>💎50+bonus - 3300ks</option>
+                    <option>💎150+bonus - 9500ks</option><option>💎250+bonus - 15500ks</option>
+                    <option>💎500+bonus - 30700ks</option><option>💎86dia - 5000ks</option>
+                    <option>💎172dia - 9700ks</option><option>💎257dia - 14500ks</option>
+                    <option>💎344dia - 19600ks</option><option>💎516dia - 29000ks</option>
+                    <option>💎706dia - 39000ks</option><option>💎1346dia - 72700ks</option>
+                    <option>💎1825dia - 96500ks</option><option>💎2195dia - 116500ks</option>
+                    <option>💎3688dia - 193900ks</option><option>💎5532dia - 290000ks</option>
+                    <option>💎9288dia - 487000ks</option>
+                    <option>Lukas's Battle Bounty - 3500ks</option><option>Battle Discounts - 3500ks</option>
+                </select>
+            </div>
+
+            <div class="payment-grid">
+                <div class="pay-card"><img src="1000027054.jpg" width="35"><br>09957114328</div>
+                <div class="pay-card"><img src="1000027053.jpg" width="35"><br>09967
                     
