@@ -4,154 +4,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RYKHO Game Store 2</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main: #00d2ff; --secondary: #3a7bd5; --bg: #0b141a; --card: #1e272e; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--bg); color: white; padding-bottom: 70px; }
-        
-        /* Navbar */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #151d24; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .balance-box { background: rgba(0, 210, 255, 0.15); padding: 6px 15px; border-radius: 20px; border: 1px solid var(--main); font-size: 14px; font-weight: bold; }
-        
-        /* Banner */
-        .banner-container { padding: 15px; }
-        .banner-img { width: 100%; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); display: block; }
-
-        /* Game Grid */
-        .section-title { padding: 0 15px; font-size: 16px; font-weight: bold; margin-bottom: 10px; color: var(--main); }
-        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 15px; }
-        .game-card { background: var(--card); border-radius: 15px; padding: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; cursor: pointer; }
-        .game-card:active { transform: scale(0.95); }
-        .game-icon { width: 100%; aspect-ratio: 1/1; border-radius: 12px; object-fit: cover; margin-bottom: 8px; }
-        .game-name { font-size: 11px; font-weight: 500; display: block; }
-
-        /* Pop up Order Card */
-        #orderModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; padding: 20px 15px; box-sizing: border-box; }
-        .modal-content { background: var(--card); border-radius: 25px; padding: 20px; max-width: 400px; margin: auto; border: 1px solid var(--main); }
-        
-        input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #0b141a; color: white; box-sizing: border-box; outline: none; }
-        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 16px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 15px; }
-        .close-btn { background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 10px; margin-bottom: 15px; cursor: pointer; float: right; }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #151d24; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-        .nav-item { color: #888; text-decoration: none; font-size: 10px; text-align: center; }
-        .nav-item.active { color: var(--main); }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 3px; }
-
-        .payment-container { margin: 15px 0; padding: 15px; background: rgba(0, 210, 255, 0.05); border-radius: 20px; border: 1px solid rgba(0, 210, 255, 0.3); font-size: 12px; }
-        .pay-card { background: #0b141a; padding: 8px; border-radius: 10px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
-        .pay-img { width: 30px; height: 30px; border-radius: 5px; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
+            background-size: cover; background-position: center; background-attachment: fixed; background-color: #0b141a;
+        }
+        #startScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; backdrop-filter: blur(15px); background: rgba(0,0,0,0.7); }
+        .logo-main { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #00d2ff; box-shadow: 0 0 30px rgba(0, 210, 255, 0.5); object-fit: cover; margin-bottom: 25px; }
+        .start-btn { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; border: none; padding: 15px 70px; border-radius: 35px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4); }
+        #mainApp { display: none; width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
+        .card { background: rgba(30, 39, 46, 0.98); padding: 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+        .tabs { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
+        .tab-btn { background: #2f3640; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 11px; }
+        .tab-btn.active { background: #00d2ff; font-weight: bold; }
         .game-section { display: none; }
         .game-section.active { display: block; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; outline: none; }
+        .payment-container { margin: 15px 0; padding: 15px; background: rgba(0, 210, 255, 0.05); border-radius: 20px; border: 1px solid rgba(0, 210, 255, 0.3); }
+        .payment-grid { display: flex; gap: 10px; margin-top: 10px; }
+        .pay-card { flex: 1; background: #252d35; padding: 15px 5px; border-radius: 18px; text-align: center; border: 1px solid #3d4650; }
+        .pay-logo-img { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 5px; }
+        .pay-number { color: #00d2ff; font-weight: bold; font-size: 12px; display: block; }
+        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 16px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="balance-box">0 ကျပ် <i class="fas fa-plus-circle"></i></div>
-        <div style="font-weight: bold; letter-spacing: 1px;">RYKHO STORE 2</div>
-        <i class="fas fa-bars" style="font-size: 20px;"></i>
+    <div id="startScreen">
+        <img src="1000027003.png" class="logo-main" alt="Logo">
+        <h1 style="color:#00d2ff; margin:0; font-size: 24px;">RYKHO Game Store 2</h1>
+        <button class="start-btn" onclick="openApp()">START</button>
     </div>
 
-    <div class="banner-container">
-        <img src="https://wallpapers.com/images/featured/mobile-legends-background-v2d3k0v6u7z9l9f0.jpg" class="banner-img">
-    </div>
+    <div id="mainApp">
+        <div class="card">
+            <h2 style="color:#00d2ff; margin-bottom:5px;">RYKHO Store 2</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
+                <button class="tab-btn" onclick="showGame('ml2x', this)">MLBB 2X 🎁</button>
+                <button class="tab-btn" onclick="showGame('pubg', this)">PUBG 🍓</button>
+                <button class="tab-btn" onclick="showGame('mcgogo', this)">MC GoGo ♟️</button>
+            </div>
 
-    <div class="section-title">ဂိမ်းများကို ရွေးချယ်ပါ</div>
-
-    <div class="game-grid">
-        <div class="game-card" onclick="openOrder('mlbb')">
-            <img src="https://m.mobilelegends.com/static/images/index/logo.png" class="game-icon">
-            <span class="game-name">Mobile Legends</span>
-        </div>
-        <div class="game-card" onclick="openOrder('ml2x')">
-            <img src="https://play-lh.googleusercontent.com/9mY_6yI7f_7f9_X8vU9Y-8U9_X8vU9Y-8U9_X8vU9Y-8U9_X8vU9Y-8U9_X8vU9Y" class="game-icon">
-            <span class="game-name">MLBB 2X Promo</span>
-        </div>
-        <div class="game-card" onclick="openOrder('pubg')">
-            <img src="https://static.wikia.nocookie.net/battlegrounds_gamepedia_en/images/1/10/PUBG_Mobile_Logo.png" class="game-icon">
-            <span class="game-name">PUBG Mobile</span>
-        </div>
-        <div class="game-card" onclick="openOrder('mcgogo')">
-            <img src="1000027003.png" class="game-icon">
-            <span class="game-name">MC GoGo</span>
-        </div>
-    </div>
-
-    <div id="orderModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeOrder()">ပိတ်ရန်</button>
-            <h3 id="modalTitle" style="color: var(--main); margin-top: 0;">Order Game</h3>
-            
-            <label id="idLabel" style="font-size: 13px; color: #aaa;">Game ID & Server</label>
+            <label id="idLabel" style="text-align:left; display:block; font-size:13px; color:#ccc;">Game ID & Server</label>
             <div style="display: flex; gap: 8px;">
                 <input type="number" id="gameId" placeholder="ID">
                 <input type="number" id="serverId" placeholder="Server" style="width: 45%;">
             </div>
 
-            <div id="mlbb" class="game-section">
+            <div id="mlbb" class="game-section active">
                 <select id="mlbbList">
                     <option value="" disabled selected>💎 MLBB List ရွေးပါ</option>
-                    <option>Weekly Pass - 5850ks</option>
-                    <option>Twilight Pass - 31500ks</option>
-                    <option>86 Diamonds - 4800ks</option>
-                    <option>172 Diamonds - 9600ks</option>
-                    <option>706 Diamonds - 38000ks</option>
+                    <option>Weekely Pass💎 - 5850ks</option>
+                    <option>Twilight Pass❤️ - 31500ks</option>
+                    <option>Monthly Epic Bundle - 15500ks</option>
+                    <option>Weekly Elite Bundle - 3000ks</option>
+                    <option disabled>──────────</option>
+                    <option>💎86-4800ks</option>
+                    <option>💎172-9600ks</option>
+                    <option>💎257-14000ks</option>
+                    <option>💎300-17200ks</option>
+                    <option>💎343-18800ks</option>
+                    <option>💎429-23600ks</option>
+                    <option>💎514-27800ks</option>
+                    <option>💎600-32700ks</option>
+                    <option>💎706-38000ks</option>
+                    <option>💎878-47000ks</option>
+                    <option>💎963-51500ks</option>
+                    <option>💎1049-57000ks</option>
+                    <option>💎1135-62250ks</option>
+                    <option>💎1220-65000ks</option>
+                    <option>💎1412-75500ks</option>
+                    <option>💎2195-115000ks</option>
+                    <option>💎3688-190000ks</option>
+                    <option>💎5532-290000ks</option>
+                    <option>💎9288-475000ks</option>
                 </select>
             </div>
 
             <div id="ml2x" class="game-section">
+                <div style="background:rgba(230,126,34,0.1); color:#e67e22; padding:8px; border-radius:10px; font-size:11px; margin-bottom:10px; border:1px dashed #e67e22;">⚠️ ID တစ်ခုလျှင် တစ်ကြိမ်သာ ဝယ်ယူခွင့်ရှိပါသည်။</div>
                 <select id="ml2xList">
                     <option value="" disabled selected>🎁 2X Promo List ရွေးပါ</option>
-                    <option>💎Dia 50 - 3000 ks</option>
-                    <option>💎Dia 250 - 15000 ks</option>
+                    <option>💎Dia 50 - 3000 ks (Bonus 50)</option>
+                    <option>💎Dia 150 - 9300 ks (Bonus 150)</option>
+                    <option>💎Dia 250 - 15000 ks (Bonus 250)</option>
+                    <option>💎Dia 500 - 30000 ks (Bonus 500)</option>
                 </select>
             </div>
 
             <div id="pubg" class="game-section">
                 <select id="pubgList">
                     <option value="" disabled selected>🍓 PUBG UC List ရွေးပါ</option>
-                    <option>60 UC - 3800ks</option>
-                    <option>325 UC - 19000ks</option>
-                    <option>1800 UC - 93000ks</option>
+                    <option>Uc60-3800ks</option>
+                    <option>U120-7800ks</option>
+                    <option>Uc180-11500ks</option>
+                    <option>Uc240-15500ks</option>
+                    <option>Uc325-19000ks</option>
+                    <option>Uc660-37500ks</option>
+                    <option>Uc1800-93000ks</option>
+                    <option>Uc3850-188000ks</option>
+                    <option>Uc8100-375000ks</option>
                 </select>
             </div>
 
             <div id="mcgogo" class="game-section">
                 <select id="mcgogoList">
                     <option value="" disabled selected>♟️ MC GoGo List ရွေးပါ</option>
-                    <option>Wp - 7000ks</option>
-                    <option>86dia - 5000ks</option>
+                    <option>💎Wp 7000</option>
+                    <option>💎50+bonus - 3300ks</option>
+                    <option>💎150+bonus - 9500ks</option>
+                    <option>💎250+bonus - 15500ks</option>
+                    <option>💎500+bonus - 30700ks</option>
+                    <option>💎86dia - 5000ks</option>
+                    <option>💎172dia - 9700ks</option>
+                    <option>💎257dia - 14500ks</option>
+                    <option>💎344dia - 19600ks</option>
+                    <option>💎516dia - 29000ks</option>
+                    <option>💎706dia - 39000ks</option>
+                    <option>💎1346dia - 72700ks</option>
+                    <option>💎1825dia - 96500ks</option>
+                    <option>💎2195dia - 116500ks</option>
+                    <option>💎3688dia - 193900ks</option>
+                    <option>💎5532dia - 290000ks</option>
+                    <option>💎9288dia - 487000ks</option>
+                    <option>Lukas Bounty - 3500ks</option>
+                    <option>Battle Discounts - 3500ks</option>
                 </select>
             </div>
 
             <div class="payment-container">
-                <p style="margin:0 0 10px 0;">ငွေပေးချေရန်</p>
-                <div class="pay-card"><img src="1000027054.jpg" class="pay-img"> KPay: 09957114328</div>
-                <div class="pay-card"><img src="1000027053.jpg" class="pay-img"> Wave: 09967353629</div>
-                <input type="file" id="screenshot" accept="image/*" style="font-size: 11px; border: 1px dashed #555;">
+                <div class="payment-grid">
+                    <div class="pay-card"><img src="1000027054.jpg" class="pay-logo-img"><span class="pay-number">09957114328</span></div>
+                    <div class="pay-card"><img src="1000027053.jpg" class="pay-logo-img"><span class="pay-number">09967353629</span></div>
+                </div>
+                <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px; margin-top:10px;">
             </div>
-
+            
             <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active"><i class="fas fa-home"></i>ပင်မ</a>
-        <a href="#" class="nav-item"><i class="fas fa-history"></i>မှတ်တမ်း</a>
-        <a href="#" class="nav-item"><i class="fas fa-wallet"></i>ငွေဖြည့်</a>
-        <a href="#" class="nav-item"><i class="fas fa-user"></i>ကျွန်ုပ်</a>
-    </div>
-
     <script>
         let currentGame = 'mlbb';
-        function openOrder(game) {
+        function openApp() { document.getElementById('startScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
+        
+        function showGame(game, btn) {
             currentGame = game;
-            document.getElementById('orderModal').style.display = 'block';
             document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(game).classList.add('active');
-            
+            btn.classList.add('active');
+
             const serverInput = document.getElementById('serverId');
             const idLabel = document.getElementById('idLabel');
             if (game === 'pubg') {
@@ -161,10 +166,7 @@
                 serverInput.style.display = 'block';
                 idLabel.innerText = "Game ID & Server";
             }
-            document.getElementById('modalTitle').innerText = game.toUpperCase() + " Top Up";
         }
-
-        function closeOrder() { document.getElementById('orderModal').style.display = 'none'; }
 
         async function sendOrder() {
             const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
@@ -178,9 +180,8 @@
                 return alert("အချက်အလက်အားလုံး ဖြည့်ပေးပါ!");
             }
 
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "ပို့ဆောင်နေပါသည်...";
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerText = "ပို့ဆောင်နေပါသည်...";
 
             try {
                 const message = `🛒 အော်ဒါအသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} ${currentGame !== 'pubg' ? '('+sId+')' : ''}\n📦 ပစ္စည်း: ${amt}`;
@@ -190,10 +191,9 @@
                 formData.append('photo', fileInput.files[0]);
                 await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
                 alert("အော်ဒါတင်ပြီးပါပြီ။");
-                closeOrder();
             } catch(e) { alert("မအောင်မြင်ပါ။"); }
-            btn.disabled = false;
-            btn.innerText = "အော်ဒါတင်မည်";
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerText = "အော်ဒါတင်မည်";
         }
     </script>
 </body>
