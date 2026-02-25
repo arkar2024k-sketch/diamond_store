@@ -76,15 +76,33 @@
             display: none; text-align: left;
         }
 
-        .payment-box { 
-            background: rgba(0, 210, 255, 0.08); 
-            padding: 15px; border-radius: 15px; 
-            margin: 15px 0; border: 1px dashed #00d2ff; 
-            text-align: left;
+        /* Modern Payment Section */
+        .payment-container {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 210, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 210, 255, 0.2);
         }
 
-        .pay-item { margin-bottom: 5px; font-size: 13px; }
-        .pay-num { color: #00d2ff; font-weight: bold; }
+        .payment-grid {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .pay-card {
+            flex: 1;
+            background: #252d35;
+            padding: 12px 5px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #3d4650;
+        }
+
+        .pay-icon { width: 35px; height: 35px; border-radius: 8px; margin-bottom: 8px; }
+        .pay-number { color: #00d2ff; font-weight: bold; font-size: 12px; display: block; margin-top: 5px; }
+        .pay-holder { color: #aaa; font-size: 10px; display: block; margin-top: 2px; }
 
         .order-btn { 
             width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); 
@@ -191,89 +209,10 @@
             </div>
             <div id="amtError" class="error-text">❌ ဝယ်ယူမည့် အမျိုးအစားကို ရွေးပေးပါ</div>
 
-            <div class="payment-box">
-                <div class="pay-item">🔹 KPay: <span class="pay-num">09957114328</span> (M M Kaung)</div>
-                <div class="pay-item">🔹 Wave: <span class="pay-num">09967353629</span> (T P Oo)</div>
-                <label style="margin-top:10px; font-size:12px;">ငွေလွှဲ Screenshot တင်ပါ</label>
-                <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px;">
-                <div id="imgError" class="error-text">❌ Screenshot ပုံ ထည့်ပေးပါဦး</div>
-            </div>
-            
-            <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
-        </div>
-    </div>
-
-    <script>
-        let currentGame = 'mlbb';
-
-        function openApp() {
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-        }
-
-        function showGame(game, btn) {
-            currentGame = game;
-            document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(game).classList.add('active');
-            btn.classList.add('active');
-            hideErrors();
-        }
-
-        function hideErrors() {
-            document.querySelectorAll('.error-text').forEach(e => e.style.display = 'none');
-        }
-
-        async function sendOrder() {
-            hideErrors();
-            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
-            const chatId = "-1003873364344";
-            
-            const gId = document.getElementById('gameId').value;
-            const sId = document.getElementById('serverId').value;
-            const fileInput = document.getElementById('screenshot');
-            const submitBtn = document.getElementById('submitBtn');
-            const amt = document.getElementById(currentGame + 'List').value;
-
-            let hasError = false;
-            if (!gId || gId.length < 4 || !sId) {
-                document.getElementById('idError').style.display = 'block';
-                hasError = true;
-            }
-            if (!amt || amt.includes("---")) {
-                document.getElementById('amtError').style.display = 'block';
-                hasError = true;
-            }
-            if (fileInput.files.length === 0) {
-                document.getElementById('imgError').style.display = 'block';
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = "ခဏစောင့်ပါ (5s)...";
-
-            const message = `🛒 အော်ဒါအသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} (${sId})\n📦 ပစ္စည်း: ${amt}`;
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
-                const formData = new FormData();
-                formData.append('chat_id', chatId);
-                formData.append('photo', fileInput.files[0]);
-                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
-                alert("အော်ဒါတင်ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်!");
-            } catch(e) {
-                alert("ပို့ဆောင်မှု မအောင်မြင်ပါ။");
-            } finally {
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "အော်ဒါတင်မည်";
-                }, 5000);
-            }
-        }
-    </script>
-</body>
-</html>
-
-
+            <div class="payment-container">
+                <span style="font-size: 14px; color: #00d2ff; font-weight: bold;">💳 ငွေလွှဲရန် အချက်အလက် (Transfer Info)</span>
+                <div class="payment-grid">
+                    <div class="pay-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/KBZ_Pay_Logo.png/600px-KBZ_Pay_Logo.png" class="pay-icon" alt="KPay">
+                        <span class="pay-number">0995711
+                            
