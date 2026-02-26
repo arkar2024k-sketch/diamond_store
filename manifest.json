@@ -1,7 +1,7 @@
 {
   "name": "RYKHO Game Store 2",
   "short_name": "RYKHO 2",
-  "start_url": "index.html",
+  "start_url": "/diamond_store/index.html",
   "display": "standalone",
   "background_color": "#0b141a",
   "theme_color": "#00d2ff",
@@ -9,6 +9,11 @@
     {
       "src": "https://cdn-icons-png.flaticon.com/512/808/808439.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/808/808439.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
