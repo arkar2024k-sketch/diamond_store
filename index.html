@@ -2,17 +2,23 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RYKHO Game Store 2</title>
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b141a">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RYKHO 2">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/808/808439.png">
 
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; color: white; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
             background-size: cover; background-position: center; background-attachment: fixed; background-color: #0b141a;
+            -webkit-tap-highlight-color: transparent;
         }
         #startScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; backdrop-filter: blur(15px); background: rgba(0,0,0,0.7); }
         .logo-main { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #00d2ff; box-shadow: 0 0 30px rgba(0, 210, 255, 0.5); object-fit: cover; margin-bottom: 25px; }
@@ -24,7 +30,7 @@
         .tab-btn.active { background: #00d2ff; font-weight: bold; }
         .game-section { display: none; }
         .game-section.active { display: block; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; outline: none; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; outline: none; font-size: 16px; }
         .payment-container { margin: 15px 0; padding: 15px; background: rgba(0, 210, 255, 0.05); border-radius: 20px; border: 1px solid rgba(0, 210, 255, 0.3); }
         .payment-grid { display: flex; gap: 10px; margin-top: 10px; }
         .pay-card { flex: 1; background: #252d35; padding: 15px 5px; border-radius: 18px; text-align: center; border: 1px solid #3d4650; }
@@ -151,17 +157,20 @@
     </div>
 
     <script>
-        // --- PWA Register အပိုင်း ---
+        // --- Service Worker Register (အရေးကြီးဆုံး - App အဖြစ်အလုပ်လုပ်ရန်) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Failed', err));
+                navigator.serviceWorker.register('./service-worker.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Failed', err));
             });
         }
 
         let currentGame = 'mlbb';
-        function openApp() { document.getElementById('startScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
+        function openApp() { 
+            document.getElementById('startScreen').style.display = 'none'; 
+            document.getElementById('mainApp').style.display = 'block'; 
+        }
         
         function showGame(game, btn) {
             currentGame = game;
@@ -198,13 +207,19 @@
 
             try {
                 const message = `🛒 အော်ဒါအသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} ${currentGame !== 'pubg' ? '('+sId+')' : ''}\n📦 ပစ္စည်း: ${amt}`;
+                
                 await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                
                 const formData = new FormData();
                 formData.append('chat_id', chatId);
                 formData.append('photo', fileInput.files[0]);
+                
                 await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                
                 alert("အော်ဒါတင်ပြီးပါပြီ။");
-            } catch(e) { alert("မအောင်မြင်ပါ။"); }
+            } catch(e) { 
+                alert("မအောင်မြင်ပါ။ အင်တာနက်ပြန်စစ်ပါ သို့မဟုတ် နောက်မှပြန်ကြိုးစားပါ။"); 
+            }
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('submitBtn').innerText = "အော်ဒါတင်မည်";
         }
