@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RYKHO Game Store 2</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b141a">
+
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; 
@@ -147,6 +151,15 @@
     </div>
 
     <script>
+        // --- PWA Register အပိုင်း ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('Service Worker Registered'))
+                .catch(err => console.log('Service Worker Failed', err));
+            });
+        }
+
         let currentGame = 'mlbb';
         function openApp() { document.getElementById('startScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
         
