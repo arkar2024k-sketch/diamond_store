@@ -12,43 +12,106 @@
     <link rel="apple-touch-icon" href="1000027122.png">
 
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; color: white; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
-            background-size: cover; background-position: center; background-attachment: fixed; background-color: #0b141a;
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg-dark: #0b141a;
+            --card-bg: rgba(30, 39, 46, 0.98);
         }
-        #startScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; backdrop-filter: blur(15px); background: rgba(0,0,0,0.7); }
-        .logo-main { width: 160px; height: 160px; border-radius: 25px; border: 3px solid #00d2ff; object-fit: cover; margin-bottom: 20px; box-shadow: 0 0 25px rgba(0, 210, 255, 0.4); }
-        .start-btn { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; border: none; padding: 15px 70px; border-radius: 35px; font-size: 18px; font-weight: bold; cursor: pointer; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; color: white; 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('1000027003.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            background-color: var(--bg-dark);
+        }
+
+        #startScreen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 100; text-align: center; backdrop-filter: blur(20px); 
+            background: rgba(0,0,0,0.8);
+        }
+
+        .logo-main { 
+            width: 160px; height: 160px; border-radius: 35px; 
+            border: 2px solid var(--primary); object-fit: cover; 
+            margin-bottom: 20px; box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+        }
+
+        .start-btn { 
+            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
+            color: white; border: none; padding: 16px 80px; border-radius: 40px; 
+            font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+
         #mainApp { display: none; width: 100%; max-width: 420px; padding: 15px; box-sizing: border-box; }
-        .card { background: rgba(30, 39, 46, 0.98); padding: 20px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
-        .tabs { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
-        .tab-btn { background: #2f3640; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 11px; }
-        .tab-btn.active { background: #00d2ff; font-weight: bold; }
-        .game-section { display: none; }
-        .game-section.active { display: block; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #444; background: #1e272e; color: white; box-sizing: border-box; font-size: 16px; outline: none; }
-        .payment-container { margin: 15px 0; padding: 15px; background: rgba(0, 210, 255, 0.05); border-radius: 20px; border: 1px solid rgba(0, 210, 255, 0.3); }
-        .payment-grid { display: flex; gap: 10px; margin-top: 10px; }
-        .pay-card { flex: 1; background: #252d35; padding: 12px 5px; border-radius: 18px; text-align: center; border: 1px solid #3d4650; }
-        .pay-logo-img { width: 40px; height: 40px; border-radius: 8px; margin-bottom: 5px; }
-        .pay-name { display: block; font-size: 9px; color: #aaa; margin-bottom: 2px; font-weight: bold; white-space: nowrap; }
-        .pay-number { color: #00d2ff; font-weight: bold; font-size: 10px; display: block; }
-        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 16px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 10px; }
+        
+        .card { 
+            background: var(--card-bg); padding: 25px 20px; border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;
+        }
+
+        .tabs { display: flex; justify-content: center; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+        
+        .tab-btn { 
+            background: #252d35; color: #ccc; border: 1px solid #3d4650; 
+            padding: 10px 14px; border-radius: 12px; cursor: pointer; font-size: 12px;
+        }
+        
+        .tab-btn.active { 
+            background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary);
+        }
+
+        input, select { 
+            width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px; 
+            border: 1px solid #3d4650; background: #161d24; color: white; 
+            box-sizing: border-box; font-size: 16px; outline: none;
+        }
+
+        .payment-container { 
+            margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.03); 
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); 
+        }
+
+        .payment-grid { display: flex; gap: 12px; margin-top: 12px; }
+        
+        .pay-card { 
+            flex: 1; background: #1c242c; padding: 15px 5px; border-radius: 20px; 
+            text-align: center; border: 1px solid #2d363f;
+        }
+
+        .pay-logo-img { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; }
+        .pay-name { display: block; font-size: 10px; color: #888; margin-bottom: 4px; font-weight: bold; }
+        .pay-number { color: var(--primary); font-weight: bold; font-size: 11px; display: block; }
+
+        .order-btn { 
+            width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); 
+            color: white; border: none; padding: 18px; border-radius: 18px; 
+            font-weight: bold; cursor: pointer; font-size: 18px;
+        }
+
+        .support-link {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 20px; color: var(--primary); text-decoration: none;
+            font-size: 14px; font-weight: 500; padding: 12px;
+            border-radius: 15px; background: rgba(0, 210, 255, 0.1);
+        }
     </style>
 </head>
 <body>
 
     <div id="startScreen">
-        <img src="1000027028.png" class="logo-main" alt="Logo">
-        <h1 style="color:#00d2ff; margin:0; font-size: 24px;">RYKHO Game Store 2</h1>
-        <p style="color:#ccc; font-size:12px; margin-top:5px;">diamond selling</p>
-        <button class="start-btn" onclick="openApp()" style="margin-top:20px;">START</button>
+        <img src="1000027122.png" class="logo-main" alt="Logo">
+        <h1 style="color:var(--primary); margin:0; font-size: 26px;">RYKHO STORE</h1>
+        <button class="start-btn" onclick="openApp()" style="margin-top:30px;">START SHOPPING</button>
     </div>
 
     <div id="mainApp">
         <div class="card">
-            <h2 style="color:#00d2ff; margin-bottom:5px; font-size: 20px;">RYKHO Store 2</h2>
+            <h2 style="color:var(--primary); margin-bottom: 15px;">RYKHO Store 2</h2>
             <div class="tabs">
                 <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
                 <button class="tab-btn" onclick="showGame('ml2x', this)">MLBB 2X 🎁</button>
@@ -56,56 +119,55 @@
                 <button class="tab-btn" onclick="showGame('mcgogo', this)">MC GoGo ♟️</button>
             </div>
 
-            <label id="idLabel" style="text-align:left; display:block; font-size:13px; color:#ccc; margin-left: 5px;">Game ID & Server</label>
-            <div style="display: flex; gap: 8px;">
-                <input type="number" id="gameId" placeholder="ID">
-                <input type="number" id="serverId" placeholder="Server" style="width: 45%;">
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="gameId" placeholder="User ID">
+                <input type="number" id="serverId" placeholder="Zone ID" style="width: 45%;">
             </div>
 
             <div id="mlbb" class="game-section active">
                 <select id="mlbbList">
-                    <option value="" disabled selected>💎 MLBB List ရွေးပါ</option>
-                    <option>Weekely Pass💎 - 5850ks</option>
-                    <option>Twilight Pass❤️ - 31500ks</option>
+                    <option value="" disabled selected>💎 MLBB Item များရွေးချယ်ပါ</option>
+                    <option>Weekly Pass 💎 - 5850ks</option>
+                    <option>Twilight Pass ❤️ - 31500ks</option>
                     <option>Monthly Epic Bundle - 15500ks</option>
                     <option>Weekly Elite Bundle - 3000ks</option>
                     <option disabled>──────────</option>
-                    <option>💎86-4800ks</option><option>💎172-9600ks</option><option>💎257-14000ks</option>
-                    <option>💎343-18800ks</option><option>💎429-23600ks</option><option>💎514-27800ks</option>
-                    <option>💎706-38000ks</option><option>💎878-47000ks</option><option>💎1049-57000ks</option>
-                    <option>💎2195-115000ks</option><option>💎3688-190000ks</option>
+                    <option>86💎 - 4800ks</option><option>172💎 - 9600ks</option><option>257💎 - 14000ks</option>
+                    <option>343💎 - 18800ks</option><option>429💎 - 23600ks</option><option>514💎 - 27800ks</option>
+                    <option>706💎 - 38000ks</option><option>878💎 - 47000ks</option><option>1049💎 - 57000ks</option>
+                    <option>2195💎 - 115000ks</option><option>3688💎 - 190000ks</option>
                 </select>
             </div>
 
             <div id="ml2x" class="game-section">
                 <select id="ml2xList">
-                    <option value="" disabled selected>🎁 2X Promo List ရွေးပါ</option>
-                    <option>💎Dia 50 - 3000 ks (Bonus 50)</option>
-                    <option>💎Dia 150 - 9300 ks (Bonus 150)</option>
-                    <option>💎Dia 250 - 15000 ks (Bonus 250)</option>
-                    <option>💎Dia 500 - 30000 ks (Bonus 500)</option>
+                    <option value="" disabled selected>🎁 MLBB 2X Promo List</option>
+                    <option>Dia 50 - 3000ks (Bonus 50)</option>
+                    <option>Dia 150 - 9300ks (Bonus 150)</option>
+                    <option>Dia 250 - 15000ks (Bonus 250)</option>
+                    <option>Dia 500 - 30000ks (Bonus 500)</option>
                 </select>
             </div>
 
             <div id="pubg" class="game-section">
                 <select id="pubgList">
-                    <option value="" disabled selected>🍓 PUBG UC List ရွေးပါ</option>
-                    <option>Uc 60-3800ks</option><option>Uc 120-7800ks</option><option>Uc 325-19000ks</option>
-                    <option>Uc 660-37500ks</option><option>Uc 1800-93000ks</option><option>Uc 8100-375000ks</option>
+                    <option value="" disabled selected>🍓 PUBG UC List</option>
+                    <option>60 UC - 3800ks</option><option>120 UC - 7800ks</option>
+                    <option>325 UC - 19000ks</option><option>660 UC - 37500ks</option>
+                    <option>1800 UC - 93000ks</option><option>8100 UC - 375000ks</option>
                 </select>
             </div>
 
             <div id="mcgogo" class="game-section">
                 <select id="mcgogoList">
-                    <option value="" disabled selected>♟️ MC GoGo List ရွေးပါ</option>
-                    <option>💎50+bonus - 3300ks</option><option>💎150+bonus - 9500ks</option>
-                    <option>💎250+bonus - 15500ks</option><option>💎500+bonus - 30700ks</option>
-                    <option>💎706dia - 39000ks</option><option>💎2195dia - 116500ks</option>
+                    <option value="" disabled selected>♟️ MC GoGo List</option>
+                    <option>50💎+bonus - 3300ks</option><option>150💎+bonus - 9500ks</option>
+                    <option>250💎+bonus - 15500ks</option><option>500💎+bonus - 30700ks</option>
+                    <option>706 💎 - 39000ks</option><option>2195 💎 - 116500ks</option>
                 </select>
             </div>
 
             <div class="payment-container">
-                <div style="font-size: 12px; color: #00d2ff; margin-bottom: 5px;">ငွေပေးချေရန်</div>
                 <div class="payment-grid">
                     <div class="pay-card">
                         <img src="1000027054.jpg" class="pay-logo-img">
@@ -118,16 +180,18 @@
                         <span class="pay-number">09967353629</span>
                     </div>
                 </div>
-                <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px; margin-top:10px;">
+                <input type="file" id="screenshot" accept="image/*" style="border:none; font-size:11px; margin-top:15px;">
             </div>
             
             <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
+
+            <a href="https://t.me/zixx2588" class="support-link" target="_blank">
+                <span>💬 Contact Admin: @zixx2588</span>
+            </a>
         </div>
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./service-worker.js'); }); }
-
         let currentGame = 'mlbb';
         function openApp() { document.getElementById('startScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
         
@@ -137,10 +201,7 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(game).classList.add('active');
             btn.classList.add('active');
-            const sInput = document.getElementById('serverId');
-            const idLabel = document.getElementById('idLabel');
-            if (game === 'pubg') { sInput.style.display = 'none'; idLabel.innerText = "PUBG Player ID"; }
-            else { sInput.style.display = 'block'; idLabel.innerText = "Game ID & Server"; }
+            document.getElementById('serverId').style.display = (game === 'pubg') ? 'none' : 'block';
         }
 
         async function sendOrder() {
@@ -152,11 +213,11 @@
             const amt = document.getElementById(currentGame + 'List').value;
 
             if (!gId || (currentGame !== 'pubg' && !sId) || !amt || fileInput.files.length === 0) {
-                return alert("အချက်အလက်အားလုံး ဖြည့်ပေးပါ!");
+                return alert("အချက်အလက်အားလုံး ဖြည့်စွက်ပေးပါ!");
             }
 
             document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerText = "ပို့ဆောင်နေပါသည်...";
+            document.getElementById('submitBtn').innerText = "ပို့ဆောင်နေသည်...";
 
             try {
                 const message = `🛒 အော်ဒါအသစ်!\n🕹️ Game: ${currentGame.toUpperCase()}\n🆔 ID: ${gId} ${currentGame !== 'pubg' ? '('+sId+')' : ''}\n📦 ပစ္စည်း: ${amt}`;
@@ -172,4 +233,5 @@
         }
     </script>
 </body>
-</html>
+                    </html>
+                    
