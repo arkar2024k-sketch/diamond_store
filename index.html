@@ -12,76 +12,40 @@
 
     <style>
         :root { --primary: #00d2ff; --bg-dark: #0b141a; }
+        body { font-family: sans-serif; margin: 0; background: var(--bg-dark); color: white; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
 
-        body { 
-            font-family: sans-serif; margin: 0; background: var(--bg-dark); color: white;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Start Screen - အပေါ်ဆုံးအလွှာ */
-        #startScreen { 
-            position: fixed; inset: 0; background: #000; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            z-index: 9999;
-        }
-
-        .enter-btn { 
-            margin-top: 30px; background: var(--primary); color: #000; 
-            border: none; padding: 15px 50px; border-radius: 30px; 
-            font-weight: bold; font-size: 18px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,210,255,0.4);
-        }
+        /* Start Screen */
+        #startScreen { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        .enter-btn { margin-top: 30px; background: var(--primary); color: #000; border: none; padding: 15px 50px; border-radius: 30px; font-weight: bold; font-size: 18px; cursor: pointer; }
 
         /* Main Content */
         #mainApp { display: none; padding-bottom: 50px; }
-
-        .tab-wrapper {
-            background: #1e272e; padding: 10px 0; position: sticky; top: 0; z-index: 100;
-        }
-
-        .tabs {
-            display: flex; overflow-x: auto; white-space: nowrap; padding: 0 15px; gap: 10px;
-            scrollbar-width: none;
-        }
+        .tab-wrapper { background: #1e272e; padding: 10px 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tabs { display: flex; overflow-x: auto; white-space: nowrap; padding: 0 15px; gap: 10px; scrollbar-width: none; }
         .tabs::-webkit-scrollbar { display: none; }
-
-        .tab-btn {
-            padding: 10px 20px; border-radius: 20px; background: #2f3640;
-            border: none; color: #aaa; cursor: pointer; flex-shrink: 0;
-        }
-
+        .tab-btn { padding: 10px 20px; border-radius: 20px; background: #2f3640; border: none; color: #aaa; cursor: pointer; flex-shrink: 0; transition: 0.3s; }
         .tab-btn.active { background: var(--primary); color: #000; font-weight: bold; }
 
         .container { padding: 20px; max-width: 450px; margin: auto; }
-
         .game-section { display: none; }
-        .game-section.active { display: block; }
+        .game-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        input, select {
-            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px;
-            border: 1px solid #3d4650; background: #161d24; color: white;
-            font-size: 16px; box-sizing: border-box;
-        }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #3d4650; background: #161d24; color: white; font-size: 16px; box-sizing: border-box; outline: none; }
 
-        .payment-box {
-            background: #1c242c; padding: 15px; border-radius: 20px; margin-top: 15px;
-        }
-
+        .payment-box { background: #1c242c; padding: 15px; border-radius: 20px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .pay-row { display: flex; gap: 10px; margin-top: 10px; }
-        .pay-card { flex: 1; background: #252d35; padding: 10px; border-radius: 15px; text-align: center; }
-        .pay-card img { width: 40px; border-radius: 8px; }
+        .pay-card { flex: 1; background: #252d35; padding: 10px; border-radius: 15px; text-align: center; border: 1px solid #3d4650; }
+        .pay-card img { width: 40px; border-radius: 8px; margin-bottom: 5px; }
 
-        .order-btn {
-            width: 100%; background: #2ecc71; color: white; border: none;
-            padding: 18px; border-radius: 15px; font-weight: bold; font-size: 18px; margin-top: 20px;
-        }
+        .order-btn { width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; font-size: 18px; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="startScreen">
-        <img src="1000027122.png" style="width:140px; border-radius:30px;">
-        <h1 style="color:var(--primary);">RYKHO STORE</h1>
+        <img src="1000027122.png" style="width:140px; border-radius:30px; border:2px solid var(--primary);">
+        <h1 style="color:var(--primary); margin-top:20px;">RYKHO STORE</h1>
         <button class="enter-btn" onclick="openApp()">ENTER STORE</button>
     </div>
 
@@ -96,59 +60,79 @@
         </div>
 
         <div class="container">
-            <h2 id="pageTitle" style="color:var(--primary);">Mobile Legends</h2>
+            <h2 id="pageTitle" style="color:var(--primary); margin-top: 0;">Mobile Legends</h2>
             <div style="display: flex; gap: 10px;">
                 <input type="number" id="gameId" placeholder="User ID">
-                <input type="number" id="serverId" placeholder="Zone ID">
+                <input type="number" id="serverId" placeholder="Zone ID" style="width: 40%;">
             </div>
 
             <div id="mlbb" class="game-section active">
                 <select id="mlbbList">
                     <option value="" disabled selected>💎 MLBB List ရွေးချယ်ပါ</option>
                     <option>Weekly Pass - 5850ks</option>
-                    <option>86💎 - 4800ks</option>
+                    <option>Twilight Pass - 31500ks</option>
+                    <option>Monthly Epic Bundle - 15500ks</option>
+                    <option>Weekly Elite Bundle - 3000ks</option>
+                    <option disabled>──────────</option>
+                    <option>86💎 - 4800ks</option><option>172💎 - 9600ks</option><option>257💎 - 14000ks</option>
+                    <option>343💎 - 18800ks</option><option>429💎 - 23600ks</option><option>514💎 - 27800ks</option>
+                    <option>706💎 - 38000ks</option><option>878💎 - 47000ks</option><option>1049💎 - 57000ks</option>
+                    <option>2195💎 - 115000ks</option><option>3688💎 - 190000ks</option>
                 </select>
             </div>
 
             <div id="ml2x" class="game-section">
                 <select id="ml2xList">
                     <option value="" disabled selected>🎁 2X Promo List</option>
-                    <option>Dia 50 - 3000ks</option>
+                    <option>Dia 50 - 3000ks (Bonus 50)</option>
+                    <option>Dia 150 - 9300ks (Bonus 150)</option>
+                    <option>Dia 250 - 15000ks (Bonus 250)</option>
+                    <option>Dia 500 - 30000ks (Bonus 500)</option>
                 </select>
             </div>
 
             <div id="pubg" class="game-section">
                 <select id="pubgList">
                     <option value="" disabled selected>🍓 PUBG UC List</option>
-                    <option>60 UC - 3800ks</option>
+                    <option>60 UC - 3800ks</option><option>120 UC - 7800ks</option>
+                    <option>325 UC - 19000ks</option><option>660 UC - 37500ks</option>
+                    <option>1800 UC - 93000ks</option><option>8100 UC - 375000ks</option>
                 </select>
             </div>
 
             <div id="mcgogo" class="game-section">
                 <select id="mcgogoList">
                     <option value="" disabled selected>♟️ MC GoGo List</option>
-                    <option>50💎 - 3300ks</option>
+                    <option>50💎+bonus - 3300ks</option><option>150💎+bonus - 9500ks</option>
+                    <option>250💎+bonus - 15500ks</option><option>500💎+bonus - 30700ks</option>
+                    <option>706💎 - 39000ks</option><option>2195💎 - 116500ks</option>
                 </select>
             </div>
 
             <div class="payment-box">
                 <div class="pay-row">
-                    <div class="pay-card"><img src="1000027054.jpg"><div style="font-size:10px;">09957114328</div></div>
-                    <div class="pay-card"><img src="1000027053.jpg"><div style="font-size:10px;">09967353629</div></div>
+                    <div class="pay-card">
+                        <img src="1000027054.jpg">
+                        <div style="font-size:10px; font-weight:bold; color:var(--primary);">09957114328</div>
+                    </div>
+                    <div class="pay-card">
+                        <img src="1000027053.jpg">
+                        <div style="font-size:10px; font-weight:bold; color:var(--primary);">09967353629</div>
+                    </div>
                 </div>
-                <input type="file" id="screenshot" accept="image/*" style="border:none; background:none;">
+                <input type="file" id="screenshot" accept="image/*" style="border:none; background:none; font-size:12px; margin-top:15px;">
             </div>
 
             <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
-            <a href="https://t.me/zixx2588" style="display:block; text-align:center; color:var(--primary); margin-top:20px; text-decoration:none;">💬 Contact Admin</a>
+            <a href="https://t.me/zixx2588" style="display:block; text-align:center; margin-top:25px; color:var(--primary); text-decoration:none; font-size:14px; padding:12px; border-radius:12px; background:rgba(0, 210, 255, 0.05); border:1px dashed var(--primary);">💬 Contact Admin: @zixx2588</a>
         </div>
     </div>
 
     <script>
         function openApp() {
-            // လုံးဝ ပွင့်သွားစေရန်
-            document.getElementById('startScreen').setAttribute('style', 'display:none !important');
+            document.getElementById('startScreen').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
+            window.scrollTo(0, 0);
         }
 
         function showGame(game, btn) {
@@ -159,24 +143,29 @@
             
             const titles = { mlbb: 'Mobile Legends', ml2x: 'MLBB 2X Promo', pubg: 'PUBG Mobile', mcgogo: 'MC GoGo' };
             document.getElementById('pageTitle').innerText = titles[game];
+            document.getElementById('serverId').style.display = (game === 'pubg') ? 'none' : 'block';
         }
 
         async function sendOrder() {
             const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
             const chatId = "-1003873364344";
             const gId = document.getElementById('gameId').value;
+            const sId = document.getElementById('serverId').value;
             const fileInput = document.getElementById('screenshot');
-            
-            if (!gId || fileInput.files.length === 0) return alert("အချက်အလက်ဖြည့်ပါ!");
+            const activeSection = document.querySelector('.game-section.active');
+            const amt = activeSection.querySelector('select').value;
 
-            document.getElementById('submitBtn').innerText = "SENDING...";
+            if (!gId || !amt || fileInput.files.length === 0) return alert("အချက်အလက်အားလုံး ဖြည့်စွက်ပေးပါ!");
+
+            document.getElementById('submitBtn').innerText = "ပို့ဆောင်နေသည်...";
             try {
-                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("🛒 New Order: " + gId)}`);
+                const message = `🛒 New Order!\n🕹️ Game: ${document.getElementById('pageTitle').innerText}\n🆔 ID: ${gId} ${sId ? '('+sId+')' : ''}\n📦 Item: ${amt}`;
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
                 const formData = new FormData();
                 formData.append('chat_id', chatId);
                 formData.append('photo', fileInput.files[0]);
                 await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
-                alert("Success!");
+                alert("Order တင်ခြင်း အောင်မြင်ပါသည်။");
             } catch(e) { alert("Error!"); }
             document.getElementById('submitBtn').innerText = "အော်ဒါတင်မည်";
         }
