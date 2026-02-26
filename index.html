@@ -8,98 +8,178 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0b141a">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="1000027122.png">
 
     <style>
-        :root {
-            --primary: #00d2ff;
-            --bg-dark: #0b141a;
-            --card-bg: #161d24;
-        }
+        :root { --primary: #00d2ff; --bg-dark: #0b141a; }
 
         body { 
-            font-family: 'Segoe UI', sans-serif; margin: 0; 
-            background-color: var(--bg-dark); color: white;
-            overflow-x: hidden;
+            font-family: sans-serif; margin: 0; background: var(--bg-dark); color: white;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Start Screen */
+        /* Start Screen - အပေါ်ဆုံးအလွှာ */
         #startScreen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: black; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; z-index: 2000; 
+            position: fixed; inset: 0; background: #000; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            z-index: 9999;
         }
 
-        /* Tab Navigation - ဘေးတိုက် တစ်တန်းတည်း */
+        .enter-btn { 
+            margin-top: 30px; background: var(--primary); color: #000; 
+            border: none; padding: 15px 50px; border-radius: 30px; 
+            font-weight: bold; font-size: 18px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,210,255,0.4);
+        }
+
+        /* Main Content */
+        #mainApp { display: none; padding-bottom: 50px; }
+
         .tab-wrapper {
-            background: #1e272e; padding: 12px 0; position: sticky;
-            top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: #1e272e; padding: 10px 0; position: sticky; top: 0; z-index: 100;
         }
 
         .tabs {
-            display: flex; overflow-x: auto; white-space: nowrap;
-            padding: 0 15px; gap: 10px; scrollbar-width: none;
+            display: flex; overflow-x: auto; white-space: nowrap; padding: 0 15px; gap: 10px;
+            scrollbar-width: none;
         }
         .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
-            padding: 10px 22px; border-radius: 25px; background: #2f3640;
-            border: none; color: #aaa; font-size: 13px; flex-shrink: 0; cursor: pointer;
+            padding: 10px 20px; border-radius: 20px; background: #2f3640;
+            border: none; color: #aaa; cursor: pointer; flex-shrink: 0;
         }
 
         .tab-btn.active { background: var(--primary); color: #000; font-weight: bold; }
 
-        /* Container */
         .container { padding: 20px; max-width: 450px; margin: auto; }
 
         .game-section { display: none; }
-        .game-section.active { display: block; animation: fadeIn 0.3s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .game-section.active { display: block; }
 
         input, select {
             width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px;
-            border: 1px solid #3d4650; background: var(--card-bg);
-            color: white; font-size: 16px; box-sizing: border-box; outline: none;
+            border: 1px solid #3d4650; background: #161d24; color: white;
+            font-size: 16px; box-sizing: border-box;
         }
 
         .payment-box {
-            background: #1c242c; padding: 15px; border-radius: 20px;
-            margin-top: 15px; border: 1px solid rgba(255,255,255,0.05);
+            background: #1c242c; padding: 15px; border-radius: 20px; margin-top: 15px;
         }
 
         .pay-row { display: flex; gap: 10px; margin-top: 10px; }
-        .pay-card {
-            flex: 1; background: #252d35; padding: 10px; border-radius: 15px;
-            text-align: center; border: 1px solid #3d4650;
-        }
-        .pay-card img { width: 40px; border-radius: 8px; margin-bottom: 5px; }
+        .pay-card { flex: 1; background: #252d35; padding: 10px; border-radius: 15px; text-align: center; }
+        .pay-card img { width: 40px; border-radius: 8px; }
 
         .order-btn {
-            width: 100%; background: linear-gradient(45deg, #2ecc71, #27ae60);
-            color: white; border: none; padding: 18px; border-radius: 15px;
-            font-size: 18px; font-weight: bold; margin-top: 20px; cursor: pointer;
-        }
-
-        .support-btn {
-            display: block; text-align: center; margin-top: 20px;
-            color: var(--primary); text-decoration: none; font-size: 14px;
-            padding: 12px; border-radius: 12px; background: rgba(0, 210, 255, 0.05);
+            width: 100%; background: #2ecc71; color: white; border: none;
+            padding: 18px; border-radius: 15px; font-weight: bold; font-size: 18px; margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <div id="startScreen">
-        <img src="1000027122.png" style="width:140px; border-radius:30px; border:2px solid var(--primary);">
-        <h1 style="color:var(--primary); margin-top:20px;">RYKHO STORE</h1>
-        <button onclick="openApp()" style="margin-top:30px; background:var(--primary); border:none; padding:15px 60px; border-radius:30px; font-weight:bold; cursor:pointer; color:black;">ENTER STORE</button>
+        <img src="1000027122.png" style="width:140px; border-radius:30px;">
+        <h1 style="color:var(--primary);">RYKHO STORE</h1>
+        <button class="enter-btn" onclick="openApp()">ENTER STORE</button>
     </div>
 
-    <div id="mainApp" style="display:none;">
+    <div id="mainApp">
         <div class="tab-wrapper">
             <div class="tabs">
                 <button class="tab-btn active" onclick="showGame('mlbb', this)">MLBB 💎</button>
-                <button class="tab
-                    
+                <button class="tab-btn" onclick="showGame('ml2x', this)">MLBB 2X 🎁</button>
+                <button class="tab-btn" onclick="showGame('pubg', this)">PUBG 🍓</button>
+                <button class="tab-btn" onclick="showGame('mcgogo', this)">MC GoGo ♟️</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2 id="pageTitle" style="color:var(--primary);">Mobile Legends</h2>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="gameId" placeholder="User ID">
+                <input type="number" id="serverId" placeholder="Zone ID">
+            </div>
+
+            <div id="mlbb" class="game-section active">
+                <select id="mlbbList">
+                    <option value="" disabled selected>💎 MLBB List ရွေးချယ်ပါ</option>
+                    <option>Weekly Pass - 5850ks</option>
+                    <option>86💎 - 4800ks</option>
+                </select>
+            </div>
+
+            <div id="ml2x" class="game-section">
+                <select id="ml2xList">
+                    <option value="" disabled selected>🎁 2X Promo List</option>
+                    <option>Dia 50 - 3000ks</option>
+                </select>
+            </div>
+
+            <div id="pubg" class="game-section">
+                <select id="pubgList">
+                    <option value="" disabled selected>🍓 PUBG UC List</option>
+                    <option>60 UC - 3800ks</option>
+                </select>
+            </div>
+
+            <div id="mcgogo" class="game-section">
+                <select id="mcgogoList">
+                    <option value="" disabled selected>♟️ MC GoGo List</option>
+                    <option>50💎 - 3300ks</option>
+                </select>
+            </div>
+
+            <div class="payment-box">
+                <div class="pay-row">
+                    <div class="pay-card"><img src="1000027054.jpg"><div style="font-size:10px;">09957114328</div></div>
+                    <div class="pay-card"><img src="1000027053.jpg"><div style="font-size:10px;">09967353629</div></div>
+                </div>
+                <input type="file" id="screenshot" accept="image/*" style="border:none; background:none;">
+            </div>
+
+            <button id="submitBtn" class="order-btn" onclick="sendOrder()">အော်ဒါတင်မည်</button>
+            <a href="https://t.me/zixx2588" style="display:block; text-align:center; color:var(--primary); margin-top:20px; text-decoration:none;">💬 Contact Admin</a>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            // လုံးဝ ပွင့်သွားစေရန်
+            document.getElementById('startScreen').setAttribute('style', 'display:none !important');
+            document.getElementById('mainApp').style.display = 'block';
+        }
+
+        function showGame(game, btn) {
+            document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(game).classList.add('active');
+            btn.classList.add('active');
+            
+            const titles = { mlbb: 'Mobile Legends', ml2x: 'MLBB 2X Promo', pubg: 'PUBG Mobile', mcgogo: 'MC GoGo' };
+            document.getElementById('pageTitle').innerText = titles[game];
+        }
+
+        async function sendOrder() {
+            const token = "8764333796:AAEety4w_i7_U5DEQ4HaTa3FQqDcgg_IHZ4";
+            const chatId = "-1003873364344";
+            const gId = document.getElementById('gameId').value;
+            const fileInput = document.getElementById('screenshot');
+            
+            if (!gId || fileInput.files.length === 0) return alert("အချက်အလက်ဖြည့်ပါ!");
+
+            document.getElementById('submitBtn').innerText = "SENDING...";
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent("🛒 New Order: " + gId)}`);
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('photo', fileInput.files[0]);
+                await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, { method: 'POST', body: formData });
+                alert("Success!");
+            } catch(e) { alert("Error!"); }
+            document.getElementById('submitBtn').innerText = "အော်ဒါတင်မည်";
+        }
+    </script>
+</body>
+</html>
